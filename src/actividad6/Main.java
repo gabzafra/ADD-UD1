@@ -45,9 +45,22 @@ public class Main {
 
   private static void findContact(File file) {
     HashMap<String, Contact> contactList = getContactList(file);
+
+    contactList.keySet().forEach(System.out::println);
+
+    Scanner input = new Scanner(System.in);
+    System.out.println("Escriba el usuario del cual desea ver sus detalles");
+    Contact contact = contactList.get(input.nextLine());
+    if (contact != null){
+      printContact(contact);
+    }else {
+      System.err.println("El contacto no existe");
+    }
   }
 
   private static HashMap<String, Contact> getContactList(File file) {
+    //No hay verificación de sí el contacto existe así que puede
+    //haber problemas con el HashMap supondremos que los nombres son únicos
     HashMap<String, Contact> contactList = new HashMap<>();
 
     boolean EOF = false;
@@ -76,7 +89,29 @@ public class Main {
   }
 
   private static void addNewContact(File file) {
+    //Ojo! no se verifica si el contacto ya existe!!!
+    Contact newContact = createContact();
 
+    DataOutputStream dataFile = null;
+    try {
+      dataFile = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file,true)));
+
+      dataFile.writeUTF(newContact.getName());
+      dataFile.writeUTF(newContact.getSurname());
+      dataFile.writeInt(newContact.getPhone());
+    } catch (FileNotFoundException e) {
+      System.out.println("El archivo de contactos no existe");
+    } catch (IOException e) {
+      System.out.println("Se ha producido un error al intentar escribir los datos");
+    } finally {
+      try {
+        if (dataFile != null) {
+          dataFile.close();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   private static void deleteContact(File file) {
