@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -43,10 +44,12 @@ public class Main {
   }
 
   private static void findContact(File file) {
-    listContacts(file);
+    HashMap<String, Contact> contactList = getContactList(file);
   }
 
-  private static void listContacts(File file) {
+  private static HashMap<String, Contact> getContactList(File file) {
+    HashMap<String, Contact> contactList = new HashMap<>();
+
     boolean EOF = false;
 
     try {
@@ -57,13 +60,14 @@ public class Main {
         contact.setName(contactData.readUTF());
         contact.setSurname(contactData.readUTF());
         contact.setPhone(contactData.readInt());
-        printContact(contact);
+        contactList.put(contact.getName(), contact);
       }
     } catch (EOFException e) {
       EOF = true;
     } catch (IOException e) {
       System.out.println("No existe el archivo de contactos");
     }
+    return contactList;
   }
 
   private static void printContact(Contact contact) {
