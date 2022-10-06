@@ -18,7 +18,7 @@ public class Main {
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
     //URL del archivo de contactos
-    String contactsPath = "D:\\DAM\\2022-2023\\_repos\\ADD-UD1\\src\\actividad6\\files\\contactos.dat";
+    String contactsPath = "D:\\DAM\\2022-2023\\_repos\\ADD-UD1\\src\\actividad6\\files\\agenda.dat";
 
     File contactsFile = initDataFile(contactsPath);
     initAgenda(contactsFile);
